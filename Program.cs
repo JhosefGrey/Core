@@ -13,21 +13,26 @@ namespace Etapa1
             var engine = new EscuelaEngine();
             engine.Inicializar();
             Printer.DibujarTitulo("Bienvenidos a la Escuela");
-            Printer.Beep(10000, cantidad:10);
+            // Printer.Beep(10000, cantidad: 10);
             ImprimirCursosEscula(engine.Escuela);
+            var listaObjetos =  engine.GetObjetosEscuela();
 
         }
 
+
+
+
+
         private static bool Predicado(Curso curobj)
         {
-            return curobj.nombre == "301";
+            return curobj.Nombre == "301";
         }
 
 
         private static void ImprimirCursosEscula(Escuela escuela)
         {
             Printer.DibujarTitulo("Cursos de la Escuela");
-            
+
             if (escuela.Cursos == null)
             {
                 return;
@@ -36,7 +41,7 @@ namespace Etapa1
             {
                 foreach (var curso in escuela.Cursos)
                 {
-                    Console.WriteLine($"Nombre: {curso.nombre}, Id: {curso.UniqueId}");
+                    Console.WriteLine($"Nombre: {curso.Nombre}, Id: {curso.UniqueId}");
                 }
             }
         }
