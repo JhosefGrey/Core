@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CoreEscuela.app;
 using CoreEscuela.Entidades;
 using CoreEscuela.Util;
@@ -15,13 +16,15 @@ namespace Etapa1
             Printer.DibujarTitulo("Bienvenidos a la Escuela");
             // Printer.Beep(10000, cantidad: 10);
             ImprimirCursosEscula(engine.Escuela);
-            var listaObjetos =  engine.GetObjetosEscuela();
+            var listaObjetos = engine.GetObjetosEscuela();
+
+            var listaIlugar = from obj in listaObjetos
+                              where obj is iLugar
+                              select (iLugar)obj;
+
+            // engine.Escuela.LimpiarLugar();
 
         }
-
-
-
-
 
         private static bool Predicado(Curso curobj)
         {

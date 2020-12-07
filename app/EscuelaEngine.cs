@@ -10,16 +10,13 @@ namespace CoreEscuela.app
     public sealed class EscuelaEngine
     {
         public Escuela Escuela { get; set; }
-
-
         public EscuelaEngine()
         {
 
         }
-
         public void Inicializar()
         {
-            Escuela = new Escuela("Platzi Adacemy", 2012, TiposEscuela.Primaria,
+            Escuela = new Escuela("Platzi Academy", 2012, TiposEscuela.Primaria,
           ciudad: "Bogota", pais: "Colombia"
           );
             CargarCursos();
@@ -27,7 +24,26 @@ namespace CoreEscuela.app
             CargarEvaluaciones();
 
         }
+        public List<ObjetoEscuelaBase> GetObjetosEscuela()
+        {
+            var listaObj = new List<ObjetoEscuelaBase>();
+            listaObj.Add(Escuela);
+            listaObj.AddRange(Escuela.Cursos);
 
+            foreach (var curso in Escuela.Cursos)
+            {
+                listaObj.AddRange(curso.Asignaturas);
+                listaObj.AddRange(curso.Alumnos);
+
+                foreach (var alumno in curso.Alumnos)
+                {
+                    listaObj.AddRange(alumno.Evaluaciones);
+                }
+            }
+
+            return listaObj;
+        }
+        #region Metodos de Carga
         private void CargarEvaluaciones()
         {
             foreach (var curso in Escuela.Cursos)
@@ -53,25 +69,6 @@ namespace CoreEscuela.app
                 }
             }
         }
-
-        public List<ObjetoEscuelaBase> GetObjetosEscuela()
-        {
-            var listaObj = new List<ObjetoEscuelaBase>();
-                listaObj.Add(Escuela);
-                listaObj.AddRange(Escuela.Cursos);
-
-                foreach(var curso in Escuela.Cursos ){
-                        listaObj.AddRange(curso.Asignaturas);
-                        listaObj.AddRange(curso.Alumnos);
-
-                        foreach(var alumno in curso.Alumnos){
-                            listaObj.AddRange(alumno.Evaluaciones);
-                        }
-                }
-
-            return listaObj;
-        }
-
         private void CargarAsignaturas()
         {
             foreach (var curso in Escuela.Cursos)
@@ -86,7 +83,6 @@ namespace CoreEscuela.app
                 curso.Asignaturas = listaAsignaturas;
             }
         }
-
         private List<Alumno> GenerarAlumnosAlAzar(int cantidad)
         {
             string[] nombre1 = { "Alba", "Felipa", "Eusebio", "Farid", "Donald", "Alvaro", "Nicolás" };
@@ -99,7 +95,6 @@ namespace CoreEscuela.app
                                select new Alumno { Nombre = $"{n1} {n2} {a1}" };
             return listaAlumnos.OrderBy((al) => al.UniqueId).Take(cantidad).ToList();
         }
-
         private void CargarCursos()
         {
             Escuela.Cursos = new List<Curso>(){
@@ -118,6 +113,6 @@ namespace CoreEscuela.app
                 curso.Alumnos = GenerarAlumnosAlAzar(cantidadRamdom);
             }
         }
-
+        #endregion
     }
 }
